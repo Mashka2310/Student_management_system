@@ -280,6 +280,31 @@ def Edit_student_details(request,pk):
         return redirect("Display_student_details")
 
 
+def Edit_student_details_U(request,pk):
+    if request.method == "POST":
+        student = StudentModel.objects.get(id=pk)
+        student.student_name = request.POST["sname"]
+        student.stuent_age = request.POST["sage"]
+        student.stuent_phone = request.POST["sphone"]
+        student.student_address = request.POST["saddress"]
+        student.student_email = request.POST["semail"]
+
+        new=request.FILES.get("file")
+        old=student.Image
+
+        if old!= None and new==None:
+            student.Image=old
+        else:
+            student.Image=new
+
+        select = request.POST["select"]
+        course = CourseModel.objects.get(id=select)
+        student.course = course
+        student.save()
+        messages.success(request,"Updated Student details!")
+        return redirect("Display_student_details")
+
+
 
 
 
