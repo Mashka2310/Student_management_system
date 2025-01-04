@@ -33,8 +33,7 @@
                     <img src="{{u.Image.url}}" width="100px" class="img-fluid" alt="">
                 </td>
                 <td>
-                    <a href=""><button class="btn btn-warning btn-sm">Edit</button></a>
-                    <a href="{% url 'Delete_teacher' u.teacher.id %}"><button class="btn btn-danger btn-sm">Delete</button></a>
+                    <a href="{% url 'Delete_teacher' u.teacher.id %}"><button class="btn btn-danger btn-sm">Remove</button></a>
                 </td>
             </tr>
             {% endfor %}

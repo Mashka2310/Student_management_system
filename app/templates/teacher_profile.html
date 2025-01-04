@@ -1,26 +1,36 @@
 {% extends 'nav_teacher.html' %}
-{% block content %}
 
-<div class="container mt-4">
-    <h4>User Profile</h4>
-    <div class="row mt-3">
-        <div class="col-md-6">
-            <strong>Name:</strong> {{user.teacher.first_name}} {{user.teacher.last_name}} <br>
-            <strong>Username:</strong> {{user.teacher.username}} <br>
-            <strong>Age:</strong> {{user.teacher_age}} <br>
-            <strong>Department:</strong> {{user.course.course_name}} <br>
-            <strong>Gender:</strong> {{user.teacher_gender}} <br>
-            <strong>Place:</strong> {{user.teacher_address}} <br>
-            <strong>Phone:</strong> {{user.teacher_phone}} <br>
-            <strong>Email:</strong> {{user.teacher.email}} <br>
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>User Profile</h3>
         </div>
-        <div class="col-md-6">
-            <strong>Image:</strong> <br>
-            <img src="{{user.Image.url}}" class="img-fluid img-thumbnail" alt="" style="max-width: 150px;"> <br>
-            <a href="{% url 'edit_teacher' user.teacher.id %}"><button class="btn btn-primary mt-3">Edit Profile</button></a>
-            <a href="{% url 'change_password' %}"><button class="btn btn-warning mt-3">Reset Password</button></a>
+        <div class="card-body">
+            <div class="row">
+                <!-- Profile Details -->
+                <div class="col-md-8">
+                    <h5 class="mb-4"><strong>Personal Information</strong></h5>
+                    <p><strong>Name:</strong> {{ user.teacher.first_name }} {{ user.teacher.last_name }}</p>
+                    <p><strong>Username:</strong> {{ user.teacher.username }}</p>
+                    <p><strong>Age:</strong> {{ user.teacher_age }}</p>
+                    <p><strong>Department:</strong> {{ user.course.course_name }}</p>
+                    <p><strong>Gender:</strong> {{ user.teacher_gender }}</p>
+                    <p><strong>Place:</strong> {{ user.teacher_address }}</p>
+                    <p><strong>Phone:</strong> {{ user.teacher_phone }}</p>
+                    <p><strong>Email:</strong> {{ user.teacher.email }}</p>
+                </div>
+                <!-- Profile Image -->
+                <div class="col-md-4 text-center">
+                    <h5 class="mb-4"><strong>Profile Picture</strong></h5>
+                    <img src="{{ user.Image.url }}" class="img-fluid img-thumbnail rounded-circle mb-3" alt="Profile Picture" style="width: 150px; height: 150px;">
+                    <div>
+                        <a href="{% url 'edit_teacher' user.teacher.id %}" class="btn btn-primary btn-block mt-2">Edit Profile</a>
+                        <a href="{% url 'change_password' %}" class="btn btn-warning btn-block mt-2">Reset Password</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

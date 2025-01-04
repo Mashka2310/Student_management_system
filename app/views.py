@@ -64,24 +64,30 @@ def logout(request):
     auth.logout(request)
     return redirect("Home_page")
 
-
+# { auth + connecting table here..}
 def create_user(request):
     if request.method=="POST":
+
+        # first we want to collect authuser fields
         first_name=request.POST["first_name"]
         last_name=request.POST["last_name"]
         username=request.POST["username"]
         email=request.POST["email"]
+        password=request.POST["password"]
+        cpassword=request.POST["cpassword"]
+
+
+        # then we want to collect TeacherModel fields
         address=request.POST["address"]
         age=request.POST["age"]
         phone=request.POST["phone"]
-        password=request.POST["password"]
-        cpassword=request.POST["cpassword"]
         gender=request.POST["gender"]
 
         select=request.POST["select"]
 
         course=CourseModel.objects.get(id=select)
 
+        # dwfault image
         image=request.FILES.get("file")
         if image==None:
             image="image/img.jpeg"
@@ -94,14 +100,17 @@ def create_user(request):
                 messages.info(request, "This email is already taken, try new!")
                 return redirect("Register_page")
             else:
+
+                # auth user
                 user = User.objects.create_user(first_name=first_name,
                                                 last_name=last_name,
                                                 username=username,
                                                 email=email,
                                                 password=password)
                 user.save()
-                
+                # connection
                 data = User.objects.get(id=user.id)
+
                 teacher_data=TeacherModel(teacher_address=address,
                                           teacher_age=age,
                                           teacher_phone=phone,
@@ -145,11 +154,13 @@ def update_teacher(request, userId):
     teacher = TeacherModel.objects.get(teacher=userId)
 
     if request.method == "POST":
+        # auth user
         user.first_name = request.POST["first_name"]
         user.last_name = request.POST["last_name"]
         user.username = request.POST["username"]
         user.email = request.POST["email"]
 
+# teachermodel - teacher
         teacher.teacher_age = request.POST["age"]
         teacher.teacher_address = request.POST["address"]
         teacher.teacher_gender = request.POST["gender"]
@@ -278,11 +289,43 @@ def Edit_student_details(request,pk):
         student.save()
         messages.success(request,"Updated Student details!")
         return redirect("Display_student_details")
+    
+def Show_all_course(request):
+    course=CourseModel.objects.all()
+    return render(request,"course_page.html",{'course':course})
+
+def Edit_course(request,pk):
+    course=CourseModel.objects.get(id=pk)
+    return render(request,"edit_course.html",{'course':course})
+
+def Edit_course_function(request,pk):
+    course=CourseModel.objects.get(id=pk)
+    if request.method=="POST":
+        course.course_name=request.POST.get("cname")
+        course.course_fee=request.POST.get("cfee")
+        course.save()
+        messages.success(request,"Course updated successfully")
+        return redirect("Show_all_course")
+    
+
+def Delete_course(request,pk):
+    delete=CourseModel.objects.get(id=pk)
+    delete.delete()
+    messages.success(request,"Course deleted successfully")
+    return redirect("Show_all_course")
 
 
 
 
 
+# image project
+# authentification -auth user
+# athuser table for admin and normal user
+# foeignkey (1.add course , 2.add student,3. course details, 4. student datails)
+# mail project
+# update(edit) and delete(remove)
+
+# auth table + connected table
 
 
 
